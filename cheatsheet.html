@@ -1,0 +1,591 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>빅데이터 분석기사 실기 · Part1 치트시트</title>
+<style>
+  :root{
+    --bg:#0f1419; --panel:#1a2129; --panel2:#222b35; --text:#e6edf3; --muted:#9aa7b4;
+    --accent:#4dd0e1; --accent2:#7ee787; --warn:#ffd166; --warnbg:#3a2f12;
+    --code-bg:#0b0f14; --comment:#6a9955; --keyword:#c586c0; --string:#ce9178;
+    --num:#b5cea8; --out:#608b4e; --border:#2d3742; --chip:#243b53;
+  }
+  html[data-theme="light"]{
+    --bg:#f5f7fa; --panel:#ffffff; --panel2:#eef2f6; --text:#1a2129; --muted:#5a6b7a;
+    --accent:#0277bd; --accent2:#1b7f3b; --warn:#a86b00; --warnbg:#fff4d6;
+    --code-bg:#f3f5f7; --comment:#3f7a2f; --keyword:#a626a4; --string:#b5360b;
+    --num:#1750a3; --out:#557a3a; --border:#d8e0e8; --chip:#dceaf5;
+  }
+  *{box-sizing:border-box;}
+  body{
+    margin:0; background:var(--bg); color:var(--text);
+    font-family:-apple-system,BlinkMacSystemFont,"Segoe UI","Apple SD Gothic Neo","Malgun Gothic",sans-serif;
+    font-size:16px; line-height:1.6; -webkit-text-size-adjust:100%;
+  }
+  header{
+    position:sticky; top:0; z-index:50; background:var(--panel);
+    border-bottom:1px solid var(--border); padding:10px 12px;
+    box-shadow:0 2px 8px rgba(0,0,0,.25);
+  }
+  .titlebar{display:flex; align-items:center; gap:10px; margin-bottom:8px;}
+  .titlebar h1{font-size:17px; margin:0; flex:1; line-height:1.3;}
+  .titlebar h1 small{display:block; font-size:11px; color:var(--muted); font-weight:400;}
+  #themeBtn{
+    background:var(--chip); color:var(--text); border:1px solid var(--border);
+    border-radius:8px; padding:6px 10px; font-size:14px; cursor:pointer; white-space:nowrap;
+  }
+  #search{
+    width:100%; padding:10px 12px; font-size:16px; border-radius:10px;
+    border:1px solid var(--border); background:var(--code-bg); color:var(--text);
+  }
+  #search::placeholder{color:var(--muted);}
+  .wrap{max-width:880px; margin:0 auto; padding:14px 12px 80px;}
+  .toc{
+    background:var(--panel); border:1px solid var(--border); border-radius:12px;
+    padding:12px 14px; margin-bottom:18px;
+  }
+  .toc h2{font-size:14px; margin:0 0 8px; color:var(--accent);}
+  .toc a{
+    display:inline-block; color:var(--text); text-decoration:none; font-size:14px;
+    background:var(--chip); padding:5px 10px; border-radius:20px; margin:3px 4px 3px 0;
+  }
+  .toc a:active{opacity:.6;}
+  section{margin-bottom:16px;}
+  details.unit{
+    background:var(--panel); border:1px solid var(--border); border-radius:12px;
+    margin-bottom:14px; overflow:hidden;
+  }
+  details.unit>summary{
+    font-size:17px; font-weight:700; padding:14px 16px; cursor:pointer;
+    background:var(--panel2); list-style:none; user-select:none;
+  }
+  details.unit>summary::-webkit-details-marker{display:none;}
+  details.unit>summary::before{content:"▸ "; color:var(--accent);}
+  details.unit[open]>summary::before{content:"▾ ";}
+  .unit-body{padding:6px 14px 14px;}
+  h3.sec{
+    font-size:15px; color:var(--accent); margin:18px 0 6px; padding-bottom:4px;
+    border-bottom:1px dashed var(--border);
+  }
+  h3.sec:first-child{margin-top:6px;}
+  p.desc{margin:4px 0 6px; color:var(--muted); font-size:14px;}
+  pre{
+    background:var(--code-bg); border:1px solid var(--border); border-radius:8px;
+    padding:10px 12px; overflow-x:auto; margin:6px 0; font-size:13.5px; line-height:1.55;
+    -webkit-overflow-scrolling:touch;
+  }
+  code{font-family:"SF Mono",Consolas,"D2Coding",Menlo,monospace;}
+  pre code{display:block; white-space:pre;}
+  .cm{color:var(--comment);}      /* 주석 */
+  .kw{color:var(--keyword);}      /* 키워드 */
+  .st{color:var(--string);}       /* 문자열 */
+  .nm{color:var(--num);}          /* 숫자 */
+  .fn{color:var(--accent);}       /* 함수/메서드 */
+  .out{color:var(--out); font-style:italic;}  /* 출력결과 주석 */
+  .warn{
+    background:var(--warnbg); border-left:4px solid var(--warn); color:var(--text);
+    border-radius:6px; padding:10px 12px; margin:10px 0; font-size:14px;
+  }
+  .warn b{color:var(--warn);}
+  table{border-collapse:collapse; width:100%; margin:8px 0; font-size:13.5px;}
+  th,td{border:1px solid var(--border); padding:7px 9px; text-align:left; vertical-align:top;}
+  th{background:var(--panel2); color:var(--accent);}
+  td code, p code, li code, summary code{
+    background:var(--code-bg); padding:1px 5px; border-radius:4px; font-size:13px; color:var(--string);
+  }
+  details.q{
+    background:var(--code-bg); border:1px solid var(--border); border-radius:8px;
+    margin:8px 0; padding:0;
+  }
+  details.q>summary{padding:10px 12px; cursor:pointer; font-size:14px; font-weight:600;}
+  details.q .ans{padding:0 12px 10px;}
+  .qno{color:var(--accent2); font-weight:700;}
+  .tech{color:var(--muted); font-size:13px; margin:4px 0 2px;}
+  .toTop{
+    position:fixed; right:14px; bottom:14px; z-index:60;
+    background:var(--accent); color:#04222a; border:none; border-radius:50%;
+    width:46px; height:46px; font-size:20px; cursor:pointer; box-shadow:0 3px 10px rgba(0,0,0,.4);
+    display:none;
+  }
+  .nohit{display:none !important;}
+  mark{background:var(--warn); color:#000; border-radius:3px;}
+  .hint{color:var(--muted); font-size:12px; margin-top:4px;}
+</style>
+</head>
+<body>
+<header>
+  <div class="titlebar">
+    <h1>빅데이터 분석기사 실기 · Part1 치트시트
+      <small>ch1 파이썬 · ch2 Pandas · ch3 작업형1유형 — 지하철/이동 중 복습용</small>
+    </h1>
+    <button id="themeBtn" onclick="toggleTheme()">🌙</button>
+  </div>
+  <input id="search" type="search" placeholder="🔎 검색 (예: groupby, loc, fillna, datetime)" oninput="doSearch(this.value)">
+</header>
+
+<div class="wrap">
+
+  <nav class="toc" data-nohide="1">
+    <h2>목차</h2>
+    <a href="#part1">1부 · 파이썬 기초</a>
+    <a href="#part2">2부 · Pandas</a>
+    <a href="#part3">3부 · 작업형1유형 예상문제</a>
+    <a href="#part4">부록 · 시험장 암기카드</a>
+  </nav>
+
+  <!-- ============ 1부 파이썬 기초 ============ -->
+  <details class="unit" id="part1" open>
+    <summary>1부 · 파이썬 기초 (ch1)</summary>
+    <div class="unit-body">
+
+      <h3 class="sec">1. 출력 / 주석</h3>
+      <pre><code><span class="fn">print</span>(<span class="st">"안녕! 시나공"</span>)   <span class="out"># 안녕! 시나공</span>
+<span class="fn">print</span>(<span class="nm">2024</span>)             <span class="out"># 2024</span>
+<span class="cm"># 한 줄 주석 (실행 안 됨)</span>
+<span class="fn">print</span>(<span class="st">"파이썬"</span>)        <span class="out"># 셀의 마지막 식 값만 자동 출력됨</span></code></pre>
+
+      <h3 class="sec">2. 산술연산자</h3>
+      <pre><code><span class="nm">1</span>+<span class="nm">2</span>, <span class="nm">4</span>-<span class="nm">1</span>, <span class="nm">2</span>*<span class="nm">3</span>, <span class="nm">16</span>/<span class="nm">3</span>   <span class="out"># 3 3 6 5.3333…(나눗셈은 항상 float)</span>
+<span class="nm">16</span>//<span class="nm">3</span>     <span class="out"># 5  (몫)</span>
+<span class="nm">16</span>%<span class="nm">3</span>      <span class="out"># 1  (나머지)</span>
+<span class="nm">4</span>**<span class="nm">2</span>      <span class="out"># 16 (거듭제곱)</span>
+<span class="nm">16</span>**<span class="nm">0.5</span>    <span class="out"># 4.0 (제곱근)</span>
+<span class="nm">4</span>+<span class="nm">3</span>*<span class="nm">2</span>     <span class="out"># 10 (곱셈 먼저), (4+3)*2 → 14</span>
+<span class="st">"py"</span> + <span class="st">"thon"</span> <span class="out"># 'python' (문자열 연결)</span></code></pre>
+      <div class="warn"><b>주의</b> 문자열+숫자는 에러. <code>"py"+3</code> ✗ → <code>"py"+"3"</code> = <code>'py3'</code></div>
+
+      <h3 class="sec">3. 자료형 & type()</h3>
+      <pre><code><span class="fn">type</span>(<span class="nm">1</span>)      <span class="out"># int</span>
+<span class="fn">type</span>(<span class="nm">1.1</span>)    <span class="out"># float</span>
+<span class="fn">type</span>(<span class="st">'hello'</span>)<span class="out"># str  ('3'도 str)</span>
+<span class="fn">type</span>(<span class="kw">True</span>)   <span class="out"># bool</span>
+<span class="kw">True</span>+<span class="kw">True</span>+<span class="kw">True</span>+<span class="kw">False</span>  <span class="out"># 3  (True=1, False=0)</span></code></pre>
+
+      <h3 class="sec">4. 자료형 변환</h3>
+      <pre><code><span class="fn">str</span>(<span class="nm">2.17</span>)        <span class="out"># '2.17'</span>
+<span class="fn">int</span>(<span class="nm">2.17</span>)        <span class="out"># 2  (소수점 버림)</span>
+<span class="fn">float</span>(<span class="st">"3.14"</span>)+<span class="nm">10</span> <span class="out"># 13.14 (문자→실수)</span></code></pre>
+
+      <h3 class="sec">5. 비교연산자</h3>
+      <pre><code><span class="nm">10</span> &gt; <span class="nm">5</span>    <span class="out"># True</span>
+<span class="nm">10</span> &gt;= <span class="nm">5</span>   <span class="out"># True (같거나 크다)</span>
+<span class="nm">10</span> == <span class="nm">10</span>  <span class="out"># True (같다)</span>
+<span class="nm">10</span> != <span class="nm">5</span>   <span class="out"># True (같지 않다)</span>
+<span class="st">"빅데이터"</span> == <span class="st">"데이터"</span>  <span class="out"># False (문자열도 비교 가능)</span></code></pre>
+
+      <h3 class="sec">6. 조건문 (if / elif / else)</h3>
+      <pre><code>score = <span class="nm">7</span>
+<span class="kw">if</span> score &gt;= <span class="nm">10</span>:
+    <span class="fn">print</span>(<span class="st">"A"</span>)
+<span class="kw">elif</span> score &lt; <span class="nm">10</span> <span class="kw">and</span> score &gt;= <span class="nm">5</span>:
+    <span class="fn">print</span>(<span class="st">"B"</span>)       <span class="out"># → B</span>
+<span class="kw">else</span>:
+    <span class="fn">print</span>(<span class="st">"C"</span>)</code></pre>
+      <p class="desc">논리: <code>and</code>(둘 다 참), <code>or</code>(하나만 참), <code>not</code>. 들여쓰기(4칸)가 곧 블록.</p>
+
+      <h3 class="sec">7. 리스트 (list)</h3>
+      <pre><code>listbox = [<span class="nm">4</span>,<span class="nm">2</span>,<span class="nm">10</span>,<span class="nm">6</span>,<span class="nm">8</span>]
+listbox[<span class="nm">0</span>]              <span class="out"># 4 (첫 원소)</span>
+listbox.<span class="fn">append</span>(<span class="st">'분석'</span>)   <span class="out"># 맨 뒤에 추가</span>
+<span class="fn">sorted</span>(listbox)         <span class="out"># [2,4,6,8,10] 오름차순(원본 유지)</span>
+<span class="fn">sorted</span>(listbox, reverse=<span class="kw">True</span>) <span class="out"># [10,8,6,4,2] 내림차순</span></code></pre>
+
+      <h3 class="sec">8. 딕셔너리 (dict)</h3>
+      <pre><code>dictbox = {<span class="st">'name'</span>:<span class="st">'쿼카'</span>, <span class="st">'level'</span>:<span class="nm">5</span>}
+dictbox[<span class="st">'name'</span>]      <span class="out"># '쿼카' (키로 값 조회)</span>
+dictbox[<span class="st">'level'</span>] = <span class="nm">6</span>  <span class="out"># 값 변경</span>
+dictbox.<span class="fn">keys</span>()        <span class="out"># dict_keys(['name','level'])</span>
+dictbox.<span class="fn">values</span>()      <span class="out"># dict_values(['쿼카',6])</span>
+dictbox.<span class="fn">items</span>()       <span class="out"># [('name','쿼카'),('level',6)]</span></code></pre>
+
+      <h3 class="sec">9. 인덱싱 / 슬라이싱</h3>
+      <pre><code>listbox = [<span class="nm">2</span>,<span class="nm">4</span>,<span class="nm">6</span>,<span class="nm">8</span>,<span class="nm">10</span>]
+listbox[-<span class="nm">1</span>]      <span class="out"># 10 (마지막)</span>
+listbox[<span class="nm">0</span>:<span class="nm">3</span>]     <span class="out"># [2,4,6] (start:stop, stop 미포함)</span>
+listbox[<span class="nm">3</span>:]      <span class="out"># [8,10] (3부터 끝까지)</span>
+listbox[:<span class="nm">3</span>]      <span class="out"># [2,4,6] (처음부터)</span>
+listbox[::<span class="nm">2</span>]     <span class="out"># [2,6,10] (step=2, 한칸씩 건너뜀)</span></code></pre>
+
+      <h3 class="sec">10. 내장함수</h3>
+      <pre><code><span class="fn">sum</span>(listbox)   <span class="out"># 합계</span>
+<span class="fn">max</span>(listbox)   <span class="out"># 최대값</span>
+<span class="fn">min</span>(listbox)   <span class="out"># 최소값</span>
+<span class="fn">len</span>(listbox)   <span class="out"># 개수</span>
+<span class="fn">round</span>(<span class="nm">1.2345</span>, <span class="nm">2</span>)  <span class="out"># 1.23 (반올림, 자리수 지정)</span></code></pre>
+
+      <h3 class="sec">11. 문자열 메서드</h3>
+      <pre><code>text = <span class="st">"빅데이터 분석기사 파이썬 공부"</span>
+text.<span class="fn">replace</span>(<span class="st">"공부"</span>,<span class="st">"스터디"</span>)   <span class="out"># 단어 교체 (.replace().replace() 체이닝 가능)</span>
+date = <span class="st">"2022-12-25"</span>
+date[<span class="nm">5</span>:]          <span class="out"># '12-25'</span>
+date.<span class="fn">split</span>(<span class="st">'-'</span>)    <span class="out"># ['2022','12','25'] (구분자로 분리)</span>
+text.<span class="fn">split</span>()       <span class="out"># 공백 기준 분리</span></code></pre>
+
+      <h3 class="sec">12. 반복문 (for)</h3>
+      <pre><code><span class="kw">for</span> item <span class="kw">in</span> [<span class="nm">2</span>,<span class="nm">4</span>,<span class="nm">6</span>]:
+    <span class="fn">print</span>(item)
+
+<span class="kw">for</span> i <span class="kw">in</span> <span class="fn">range</span>(<span class="nm">5</span>):       <span class="out"># 0,1,2,3,4</span>
+<span class="kw">for</span> i <span class="kw">in</span> <span class="fn">range</span>(<span class="nm">5</span>,<span class="nm">10</span>):    <span class="out"># 5,6,7,8,9</span>
+
+<span class="cm"># enumerate: 인덱스+값 동시</span>
+<span class="kw">for</span> index, item <span class="kw">in</span> <span class="fn">enumerate</span>(listbox):
+    <span class="fn">print</span>(index, item)
+
+<span class="cm"># zip: 두 리스트 묶기 (키,값 동시)</span>
+<span class="kw">for</span> k, v <span class="kw">in</span> <span class="fn">zip</span>(d.<span class="fn">keys</span>(), d.<span class="fn">values</span>()):
+    <span class="fn">print</span>(k, v)</code></pre>
+
+      <h3 class="sec">13. 함수 (def / return)</h3>
+      <pre><code><span class="kw">def</span> <span class="fn">plus</span>(x, y):       <span class="cm"># 파라미터</span>
+    <span class="kw">return</span> x + y       <span class="cm"># 리턴값</span>
+a = <span class="fn">plus</span>(<span class="nm">2</span>,<span class="nm">3</span>)        <span class="out"># 5</span>
+
+<span class="cm"># 리턴값 2개 (최소,최대)</span>
+<span class="kw">def</span> <span class="fn">min_max</span>(data):
+    <span class="kw">return</span> <span class="fn">min</span>(data), <span class="fn">max</span>(data)
+a, b = <span class="fn">min_max</span>(listbox)  <span class="out"># 언패킹</span>
+
+<span class="cm"># 평균 함수</span>
+<span class="kw">def</span> <span class="fn">mean</span>(data):
+    <span class="kw">return</span> <span class="fn">sum</span>(data) / <span class="fn">len</span>(data)</code></pre>
+
+    </div>
+  </details>
+
+  <!-- ============ 2부 PANDAS ============ -->
+  <details class="unit" id="part2" open>
+    <summary>2부 · Pandas (ch2) — 핵심</summary>
+    <div class="unit-body">
+      <pre><code><span class="kw">import</span> pandas <span class="kw">as</span> pd
+<span class="kw">import</span> numpy <span class="kw">as</span> np</code></pre>
+
+      <h3 class="sec">1. Series / DataFrame 생성·선택</h3>
+      <pre><code>pd.<span class="fn">Series</span>([<span class="nm">10000</span>,<span class="nm">9000</span>])         <span class="out"># 1차원</span>
+df = pd.<span class="fn">DataFrame</span>({<span class="st">"메뉴"</span>:menu, <span class="st">"가격"</span>:price})
+df[<span class="st">'가격'</span>]      <span class="out"># Series (1개 컬럼)</span>
+df[[<span class="st">'가격'</span>]]    <span class="out"># DataFrame (대괄호 2개)</span>
+df[[<span class="st">'메뉴'</span>,<span class="st">'가격'</span>]] <span class="out"># 여러 컬럼</span></code></pre>
+      <div class="warn"><b>핵심</b> 대괄호 1개 <code>df['x']</code> = Series / 대괄호 2개 <code>df[['x']]</code> = DataFrame</div>
+
+      <h3 class="sec">2. 입출력 (I/O)</h3>
+      <pre><code>df = pd.<span class="fn">read_csv</span>(<span class="st">"data.csv"</span>)
+df.<span class="fn">to_csv</span>(<span class="st">"out.csv"</span>, index=<span class="kw">False</span>)  <span class="out"># index 미저장</span></code></pre>
+
+      <h3 class="sec">3. EDA (탐색)</h3>
+      <pre><code>df.<span class="fn">head</span>(<span class="nm">2</span>)      <span class="out"># 앞 2행 (기본 5)</span>
+df.<span class="fn">tail</span>(<span class="nm">3</span>)      <span class="out"># 뒤 3행</span>
+df.<span class="fn">sample</span>(<span class="nm">3</span>)    <span class="out"># 랜덤 3행</span>
+df.shape         <span class="out"># (행, 열) 튜플  / df.shape[0]=행수</span>
+df.<span class="fn">info</span>()       <span class="out"># 자료형·결측 개수</span>
+df.<span class="fn">describe</span>()   <span class="out"># 수치 통계요약</span>
+df.<span class="fn">describe</span>(include=<span class="st">"O"</span>)  <span class="out"># 문자형(Object) 요약</span>
+df.<span class="fn">corr</span>(numeric_only=<span class="kw">True</span>)  <span class="out"># 상관계수</span>
+df.<span class="fn">nunique</span>()              <span class="out"># 컬럼별 고유값 개수</span>
+df[<span class="st">'col'</span>].<span class="fn">unique</span>()       <span class="out"># 고유값 배열</span>
+df[<span class="st">'col'</span>].<span class="fn">value_counts</span>() <span class="out"># 값별 빈도</span></code></pre>
+
+      <h3 class="sec">4. 형변환 · 컬럼 추가/삭제</h3>
+      <pre><code>df[<span class="st">'가격'</span>].<span class="fn">astype</span>(<span class="st">'int'</span>)   <span class="out"># int/float 변환</span>
+df[<span class="st">'할인가'</span>] = df[<span class="st">'가격'</span>] * <span class="nm">0.8</span>  <span class="out"># 새 컬럼(연산)</span>
+df.<span class="fn">drop</span>(<span class="st">'칼로리'</span>, axis=<span class="nm">1</span>)   <span class="out"># 컬럼 삭제 (axis=1)</span>
+df.<span class="fn">drop</span>(<span class="nm">1</span>, axis=<span class="nm">0</span>)        <span class="out"># 행 삭제 (axis=0)</span>
+<span class="cm"># inplace=True → 원본에 바로 반영</span></code></pre>
+
+      <h3 class="sec">5. loc (라벨) / iloc (위치) ★중요</h3>
+      <pre><code>df.<span class="fn">loc</span>[<span class="nm">1</span>, <span class="st">"가격"</span>]          <span class="out"># 행라벨1, 가격 셀</span>
+df.<span class="fn">loc</span>[:, <span class="st">"가격"</span>]          <span class="out"># 가격 컬럼 전체</span>
+df.<span class="fn">loc</span>[<span class="nm">1</span>:<span class="nm">3</span>, <span class="st">'메뉴'</span>:<span class="st">'가격'</span>]  <span class="out"># 행1~3, 메뉴~가격 (양끝 포함!)</span>
+df.<span class="fn">iloc</span>[<span class="nm">1</span>, <span class="nm">0</span>:<span class="nm">2</span>]          <span class="out"># 위치 기준, 0~1열 (끝 제외)</span>
+df.<span class="fn">iloc</span>[<span class="nm">0</span>:<span class="nm">2</span>]             <span class="out"># 0,1행</span></code></pre>
+      <div class="warn"><b>★ 시험 단골</b> <code>loc</code>는 라벨 기준이라 <b>양끝 포함</b> / <code>iloc</code>는 위치 기준이라 <b>끝 제외</b>. <br>예) <code>loc[1:3]</code>→1,2,3행 / <code>iloc[1:3]</code>→1,2행</div>
+
+      <h3 class="sec">6. 조건부 대입</h3>
+      <pre><code>df.<span class="fn">loc</span>[df[<span class="st">'메뉴'</span>]==<span class="st">'아메리카노'</span>, <span class="st">'원산지'</span>] = <span class="st">'콜롬비아'</span>
+df.<span class="fn">loc</span>[~df[<span class="st">'메뉴'</span>].<span class="fn">isin</span>([<span class="st">'아메리카노'</span>,<span class="st">'카페라떼'</span>]), <span class="st">'원산지'</span>] = <span class="st">'과테말라'</span>
+df[<span class="st">'col'</span>] = np.nan        <span class="out"># 빈(NaN) 컬럼 생성</span></code></pre>
+
+      <h3 class="sec">7. 정렬</h3>
+      <pre><code>df.<span class="fn">sort_values</span>(<span class="st">'가격'</span>, ascending=<span class="kw">False</span>)   <span class="out"># 내림차순</span>
+df.<span class="fn">sort_values</span>([<span class="st">'가격'</span>,<span class="st">'메뉴'</span>], ascending=[<span class="kw">False</span>,<span class="kw">True</span>]) <span class="out"># 다중기준</span>
+df.<span class="fn">sort_index</span>()              <span class="out"># 인덱스 정렬</span>
+df.<span class="fn">reset_index</span>(drop=<span class="kw">True</span>)   <span class="out"># 인덱스 0,1,2… 재설정</span></code></pre>
+
+      <h3 class="sec">8. 필터링 (Boolean)</h3>
+      <pre><code>df[df[<span class="st">'칼로리'</span>] &lt; <span class="nm">50</span>]          <span class="out"># 조건 필터</span>
+cond1 = df[<span class="st">'가격'</span>] &gt;= <span class="nm">5000</span>
+cond2 = df[<span class="st">'칼로리'</span>] &gt; <span class="nm">100</span>
+df[cond1 &amp; cond2]   <span class="out"># AND</span>
+df[cond1 | cond2]   <span class="out"># OR</span>
+df[~cond1]          <span class="out"># NOT</span>
+df[df[<span class="st">'메뉴'</span>].<span class="fn">isin</span>([<span class="st">'녹차'</span>,<span class="st">'카푸치노'</span>])]  <span class="out"># 목록 포함</span></code></pre>
+      <div class="warn"><b>주의</b> 파이썬 <code>and/or</code> 아닌 <code>&amp; | ~</code> 사용. 각 조건은 <b>괄호로 감싸기</b>: <code>(df.a&gt;1) &amp; (df.b&lt;2)</code></div>
+
+      <h3 class="sec">9. 결측치 처리</h3>
+      <pre><code>df.<span class="fn">isnull</span>().<span class="fn">sum</span>()         <span class="out"># 컬럼별 결측 개수 (=isna())</span>
+df[<span class="st">'원산지'</span>].<span class="fn">fillna</span>(<span class="st">'코스타리카'</span>)  <span class="out"># 값으로 채움</span>
+<span class="cm"># 대표 패턴: 최솟값/평균/최빈값으로 채우기</span>
+df[<span class="st">'가격'</span>] = df[<span class="st">'가격'</span>].<span class="fn">fillna</span>(df[<span class="st">'가격'</span>].<span class="fn">min</span>())
+df[<span class="st">'f3'</span>]  = df[<span class="st">'f3'</span>].<span class="fn">fillna</span>(df[<span class="st">'f3'</span>].<span class="fn">mode</span>()[<span class="nm">0</span>])</code></pre>
+
+      <h3 class="sec">10. 값 변경 (replace / map)</h3>
+      <pre><code>df.<span class="fn">replace</span>(<span class="st">'아메리카노'</span>,<span class="st">'룽고'</span>)         <span class="out"># 전체 치환</span>
+df.<span class="fn">replace</span>({<span class="st">'룽고'</span>:<span class="st">'아메리카노'</span>, <span class="st">'그린티'</span>:<span class="st">'녹차'</span>})  <span class="out"># dict 치환</span>
+mapping = {<span class="st">'만족'</span>:<span class="nm">3</span>, <span class="st">'보통'</span>:<span class="nm">2</span>, <span class="st">'불만'</span>:<span class="nm">1</span>}
+df[<span class="st">'점수'</span>] = df[<span class="st">'만족도'</span>].<span class="fn">map</span>(mapping)  <span class="out"># 값 매핑</span></code></pre>
+
+      <h3 class="sec">11. 문자열 (.str)</h3>
+      <pre><code>df[<span class="st">'A'</span>].<span class="fn">str</span>.<span class="fn">replace</span>(<span class="st">'분석'</span>,<span class="st">'시각화'</span>)
+df[<span class="st">'A'</span>].<span class="fn">str</span>.<span class="fn">split</span>().<span class="fn">str</span>[<span class="nm">0</span>]   <span class="out"># 분리 후 첫 단어</span>
+df[<span class="st">'A'</span>].<span class="fn">str</span>.<span class="fn">contains</span>(<span class="st">'기본'</span>)   <span class="out"># 포함여부(bool)</span>
+df[<span class="st">'A'</span>].<span class="fn">str</span>.<span class="fn">len</span>()             <span class="out"># 문자 길이</span>
+df[<span class="st">'C'</span>].<span class="fn">str</span>.<span class="fn">lower</span>() / .<span class="fn">upper</span>()  <span class="out"># 대소문자</span>
+df[<span class="st">'C'</span>].<span class="fn">str</span>[<span class="nm">1</span>:<span class="nm">3</span>]             <span class="out"># 문자 슬라이싱</span></code></pre>
+
+      <h3 class="sec">12. 통계 함수</h3>
+      <pre><code>df[<span class="st">'가격'</span>].<span class="fn">mean</span>()/.<span class="fn">median</span>()/.<span class="fn">std</span>()/.<span class="fn">var</span>()
+df[<span class="st">'가격'</span>].<span class="fn">quantile</span>(<span class="nm">.25</span>)   <span class="out"># 1사분위 (.75=3사분위)</span>
+df[<span class="st">'원산지'</span>].<span class="fn">mode</span>()[<span class="nm">0</span>]    <span class="out"># 최빈값</span>
+df[<span class="st">'가격'</span>].<span class="fn">idxmax</span>()       <span class="out"># 최대값의 인덱스</span>
+df.<span class="fn">nlargest</span>(<span class="nm">3</span>,<span class="st">'가격'</span>)    <span class="out"># 상위 3개 행</span>
+df.<span class="fn">nsmallest</span>(<span class="nm">2</span>,<span class="st">'가격'</span>)   <span class="out"># 하위 2개 행</span>
+df[<span class="st">'칼로리'</span>].<span class="fn">apply</span>(함수)   <span class="out"># 사용자 함수 적용</span>
+df.<span class="fn">sum</span>(numeric_only=<span class="kw">True</span>)    <span class="out"># 수치 컬럼만 합</span></code></pre>
+
+      <h3 class="sec">13. groupby (그룹 집계)</h3>
+      <pre><code>df.<span class="fn">groupby</span>(<span class="st">'원산지'</span>).<span class="fn">mean</span>(numeric_only=<span class="kw">True</span>)
+df.<span class="fn">groupby</span>([<span class="st">'원산지'</span>,<span class="st">'메뉴'</span>]).<span class="fn">agg</span>([<span class="st">'mean'</span>,<span class="st">'sum'</span>])  <span class="out"># 다중집계</span>
+df.<span class="fn">groupby</span>(...).<span class="fn">mean</span>(...).<span class="fn">reset_index</span>()  <span class="out"># 표 형태로</span>
+df.<span class="fn">groupby</span>(<span class="st">'과일'</span>)[<span class="st">'가격'</span>].<span class="fn">transform</span>(<span class="st">"mean"</span>)  <span class="out"># 그룹평균을 각 행에</span>
+<span class="cm"># 멀티인덱스 → 표로 펼치기</span>
+grouped.<span class="fn">unstack</span>()</code></pre>
+
+      <h3 class="sec">14. 시계열 (datetime)</h3>
+      <pre><code>df[<span class="st">'d'</span>] = pd.<span class="fn">to_datetime</span>(df[<span class="st">'Date'</span>])
+pd.<span class="fn">to_datetime</span>(df[<span class="st">'D2'</span>], format=<span class="st">'%Y:%m:%d'</span>)  <span class="out"># 포맷 지정</span>
+df[<span class="st">'d'</span>].<span class="fn">dt</span>.year / .month / .day / .hour
+df[<span class="st">'d'</span>].<span class="fn">dt</span>.dayofweek      <span class="out"># 요일(월=0)</span>
+df[<span class="st">'d'</span>].<span class="fn">dt</span>.<span class="fn">to_period</span>(<span class="st">'M'</span>)  <span class="out"># 연/분기/월: Y Q M D H</span>
+<span class="cm"># 기간 더하기/빼기, 차이 계산</span>
+df[<span class="st">'d'</span>] + pd.<span class="fn">Timedelta</span>(days=<span class="nm">99</span>)
+(diff).<span class="fn">dt</span>.<span class="fn">total_seconds</span>()/<span class="nm">60</span>/<span class="nm">60</span>/<span class="nm">24</span>  <span class="out"># 일수</span>
+diff.<span class="fn">dt</span>.days</code></pre>
+
+      <h3 class="sec">15. 합치기 (concat / merge)</h3>
+      <pre><code>pd.<span class="fn">concat</span>([df1, df2], ignore_index=<span class="kw">True</span>)  <span class="out"># 세로 이어붙임</span>
+pd.<span class="fn">concat</span>([df1, df2], axis=<span class="nm">1</span>)            <span class="out"># 가로 붙임</span>
+pd.<span class="fn">merge</span>(price, cal, on=<span class="st">'Menu'</span>)          <span class="out"># 공통키 결합</span></code></pre>
+
+      <h3 class="sec">16. pivot_table / melt</h3>
+      <pre><code>pd.<span class="fn">pivot_table</span>(df, index=<span class="st">'부서'</span>, columns=<span class="st">'직급'</span>,
+               values=<span class="st">'급여'</span>, aggfunc=<span class="st">'sum'</span>, fill_value=<span class="nm">0</span>)
+<span class="cm"># 컬럼마다 다른 집계</span>
+pd.<span class="fn">pivot_table</span>(df, values=[<span class="st">'수량'</span>,<span class="st">'금액'</span>], index=<span class="st">'구분'</span>,
+               aggfunc={<span class="st">'수량'</span>:<span class="st">"mean"</span>, <span class="st">'금액'</span>:[<span class="st">"min"</span>,<span class="st">"max"</span>]})
+<span class="cm"># melt: 넓은 표 → 긴 표 (언피벗)</span>
+pd.<span class="fn">melt</span>(df, id_vars=[<span class="st">'Name'</span>], var_name=<span class="st">'과목'</span>, value_name=<span class="st">'점수'</span>)</code></pre>
+
+    </div>
+  </details>
+
+  <!-- ============ 3부 작업형1유형 ============ -->
+  <details class="unit" id="part3" open>
+    <summary>3부 · 작업형 1유형 예상문제 (ch3) — 자가테스트</summary>
+    <div class="unit-body">
+      <p class="desc">문제를 먼저 풀어보고, 클릭해서 정답 코드를 확인하세요. (데이터: <code>type1_data1.csv</code>)</p>
+
+      <details class="q"><summary><span class="qno">Q1.</span> f5≠0 행만 남기고, views 결측을 최솟값으로 채운 뒤 중앙값(정수)?</summary>
+      <div class="ans"><p class="tech">기법: 조건필터 + fillna(min) + median</p>
+      <pre><code>cond = df[<span class="st">'f5'</span>] != <span class="nm">0</span>
+df = df[cond]
+df[<span class="st">'views'</span>] = df[<span class="st">'views'</span>].<span class="fn">fillna</span>(df[<span class="st">'views'</span>].<span class="fn">min</span>())
+<span class="fn">print</span>(<span class="fn">int</span>(df[<span class="st">'views'</span>].<span class="fn">median</span>()))</code></pre></div></details>
+
+      <details class="q"><summary><span class="qno">Q2.</span> subscribed 최빈값에서 '일'(끝 2자리)만 추출?</summary>
+      <div class="ans"><p class="tech">기법: value_counts + index + 문자 슬라이싱</p>
+      <pre><code>vc = df[<span class="st">'subscribed'</span>].<span class="fn">value_counts</span>()
+<span class="fn">int</span>(vc.index[<span class="nm">0</span>][-<span class="nm">2</span>:])   <span class="out"># 최빈값의 마지막 2글자</span></code></pre></div></details>
+
+      <details class="q"><summary><span class="qno">Q3.</span> views/f1 파생컬럼 내림차순 정렬 후 1위 행의 age?</summary>
+      <div class="ans"><p class="tech">기법: dropna + 파생컬럼 + sort_values + iloc</p>
+      <pre><code>df = df.<span class="fn">dropna</span>()
+df[<span class="st">'new'</span>] = df[<span class="st">'views'</span>] / df[<span class="st">'f1'</span>]
+df = df.<span class="fn">sort_values</span>(<span class="st">'new'</span>, ascending=<span class="kw">False</span>)
+<span class="fn">int</span>(df.<span class="fn">iloc</span>[<span class="nm">0</span>, <span class="nm">1</span>])</code></pre></div></details>
+
+      <details class="q"><summary><span class="qno">Q4.</span> views 결측 0으로 채우고, 상위 10개를 그중 최솟값으로 바꾼 뒤 합?</summary>
+      <div class="ans"><p class="tech">기법: nlargest로 10번째 값 → loc 조건 대치 → sum</p>
+      <pre><code>df[<span class="st">'views'</span>] = df[<span class="st">'views'</span>].<span class="fn">fillna</span>(<span class="nm">0</span>)
+value = df[<span class="st">'views'</span>].<span class="fn">nlargest</span>(<span class="nm">10</span>).<span class="fn">iloc</span>[-<span class="nm">1</span>]  <span class="out"># 10번째로 큰 값</span>
+df.<span class="fn">loc</span>[df[<span class="st">'views'</span>] &gt; value, <span class="st">'views'</span>] = value
+<span class="fn">print</span>(<span class="fn">int</span>(df[<span class="st">'views'</span>].<span class="fn">sum</span>()))</code></pre></div></details>
+
+      <details class="q"><summary><span class="qno">Q5.</span> f4의 3~4번째 글자가 'FJ'인 행의 f2 평균(소수 2자리)? (str.contains 버전도)</summary>
+      <div class="ans"><p class="tech">기법: str 슬라이싱 / str.contains + mean + round</p>
+      <pre><code>df[<span class="st">'new'</span>] = df[<span class="st">'f4'</span>].<span class="fn">str</span>[<span class="nm">2</span>:<span class="nm">4</span>]
+df = df[df[<span class="st">'new'</span>] == <span class="st">'FJ'</span>]
+<span class="fn">round</span>(df[<span class="st">'f2'</span>].<span class="fn">mean</span>(), <span class="nm">2</span>)
+<span class="cm"># 또는: df[df['f4'].str.contains('FJ')]['f2'].mean()</span></code></pre></div></details>
+
+      <details class="q"><summary><span class="qno">Q6.</span> f3=='gold' AND f2==2인 행의 f1 분산(소수 2자리)?</summary>
+      <div class="ans"><p class="tech">기법: 다중조건(&amp;) + var</p>
+      <pre><code>cond1 = df[<span class="st">'f3'</span>] == <span class="st">'gold'</span>
+cond2 = df[<span class="st">'f2'</span>] == <span class="nm">2</span>
+df = df[cond1 &amp; cond2]
+<span class="fn">round</span>(df[<span class="st">'f1'</span>].<span class="fn">var</span>(), <span class="nm">2</span>)</code></pre></div></details>
+
+      <details class="q"><summary><span class="qno">Q7.</span> age에 +1 후, 20대와 30대의 views 평균 차이(절댓값)?</summary>
+      <div class="ans"><p class="tech">기법: 구간조건 + mean 비교 + abs</p>
+      <pre><code>df[<span class="st">'age'</span>] = df[<span class="st">'age'</span>] + <span class="nm">1</span>
+cond1 = (df[<span class="st">'age'</span>]&gt;=<span class="nm">20</span>) &amp; (df[<span class="st">'age'</span>]&lt;<span class="nm">30</span>)
+cond2 = (df[<span class="st">'age'</span>]&gt;=<span class="nm">30</span>) &amp; (df[<span class="st">'age'</span>]&lt;<span class="nm">40</span>)
+<span class="fn">round</span>(<span class="fn">abs</span>(df[cond1][<span class="st">'views'</span>].<span class="fn">mean</span>() - df[cond2][<span class="st">'views'</span>].<span class="fn">mean</span>()), <span class="nm">2</span>)</code></pre></div></details>
+
+      <details class="q"><summary><span class="qno">Q8.</span> subscribed를 날짜로 변환, 2024년 2월 &amp; f3=='gold'인 행 개수?</summary>
+      <div class="ans"><p class="tech">기법: to_datetime + dt.year/month + 다중조건 + len</p>
+      <pre><code>df[<span class="st">'subscribed'</span>] = pd.<span class="fn">to_datetime</span>(df[<span class="st">'subscribed'</span>])
+df[<span class="st">'year'</span>] = df[<span class="st">'subscribed'</span>].<span class="fn">dt</span>.year
+df[<span class="st">'month'</span>] = df[<span class="st">'subscribed'</span>].<span class="fn">dt</span>.month
+df = df[(df[<span class="st">'year'</span>]==<span class="nm">2024</span>) &amp; (df[<span class="st">'month'</span>]==<span class="nm">2</span>) &amp; (df[<span class="st">'f3'</span>]==<span class="st">'gold'</span>)]
+<span class="fn">print</span>(<span class="fn">len</span>(df))</code></pre></div></details>
+
+      <details class="q"><summary><span class="qno">Q9.</span> views≤1000 행에서 f4의 최빈값?</summary>
+      <div class="ans"><p class="tech">기법: 조건필터 + mode()[0]</p>
+      <pre><code>df = df[df[<span class="st">'views'</span>] &lt;= <span class="nm">1000</span>]
+<span class="fn">print</span>(df[<span class="st">'f4'</span>].<span class="fn">mode</span>()[<span class="nm">0</span>])</code></pre></div></details>
+
+      <details class="q"><summary><span class="qno">Q10.</span> 결측 제거 후 city별 평균에서 f2 평균이 가장 큰 city?</summary>
+      <div class="ans"><p class="tech">기법: dropna + groupby.mean + idxmax</p>
+      <pre><code>df = df.<span class="fn">dropna</span>()
+df = df.<span class="fn">groupby</span>(<span class="st">'city'</span>).<span class="fn">mean</span>(numeric_only=<span class="kw">True</span>)
+<span class="fn">print</span>(df[<span class="st">'f2'</span>].<span class="fn">idxmax</span>())</code></pre></div></details>
+
+      <details class="q"><summary><span class="qno">Q11.</span> 결측 제거 후 상위 70% 데이터의 views IQR(Q3-Q1, 정수)?</summary>
+      <div class="ans"><p class="tech">기법: 길이*0.7 슬라이싱 + quantile</p>
+      <pre><code>df = df.<span class="fn">dropna</span>()
+end = <span class="fn">int</span>(<span class="fn">len</span>(df) * <span class="nm">0.7</span>)
+df = df.<span class="fn">iloc</span>[:end]
+q3 = df[<span class="st">'views'</span>].<span class="fn">quantile</span>(<span class="nm">.75</span>)
+q1 = df[<span class="st">'views'</span>].<span class="fn">quantile</span>(<span class="nm">.25</span>)
+<span class="fn">print</span>(<span class="fn">int</span>(q3 - q1))</code></pre></div></details>
+
+      <details class="q"><summary><span class="qno">Q12.</span> 결측 최다 컬럼의 결측행 제거 후, f3 결측을 최빈값으로 채우고 'gold' 개수?</summary>
+      <div class="ans"><p class="tech">기법: isnull().sum().idxmax() + dropna(subset) + fillna(mode)</p>
+      <pre><code>col = df.<span class="fn">isnull</span>().<span class="fn">sum</span>().<span class="fn">idxmax</span>()   <span class="out"># 결측 가장 많은 컬럼명</span>
+df = df.<span class="fn">dropna</span>(subset=[col])
+freq = df[<span class="st">'f3'</span>].<span class="fn">mode</span>()[<span class="nm">0</span>]
+df[<span class="st">'f3'</span>] = df[<span class="st">'f3'</span>].<span class="fn">fillna</span>(freq)
+<span class="fn">print</span>(<span class="fn">len</span>(df[df[<span class="st">'f3'</span>]==<span class="st">'gold'</span>]))   <span class="out"># sum(df['f3']=='gold')도 가능</span></code></pre></div></details>
+
+    </div>
+  </details>
+
+  <!-- ============ 부록 ============ -->
+  <details class="unit" id="part4" open>
+    <summary>부록 · 시험장 빠른 암기카드</summary>
+    <div class="unit-body">
+
+      <h3 class="sec">① loc vs iloc 비교</h3>
+      <table>
+        <tr><th></th><th>loc (라벨)</th><th>iloc (위치)</th></tr>
+        <tr><td>기준</td><td>인덱스/컬럼 이름</td><td>정수 위치(0부터)</td></tr>
+        <tr><td>끝 범위</td><td><b>양끝 포함</b></td><td><b>끝 제외</b></td></tr>
+        <tr><td>예시</td><td><code>loc[1:3]</code>→1,2,3</td><td><code>iloc[1:3]</code>→1,2</td></tr>
+      </table>
+
+      <h3 class="sec">② 조건 필터 연산자</h3>
+      <table>
+        <tr><th>AND</th><th>OR</th><th>NOT</th></tr>
+        <tr><td><code>&amp;</code></td><td><code>|</code></td><td><code>~</code></td></tr>
+      </table>
+      <p class="desc">⚠️ 각 조건은 반드시 괄호: <code>(df.a&gt;1) &amp; (df.b&lt;2)</code></p>
+
+      <h3 class="sec">③ 결측치 3대 대치 패턴</h3>
+      <pre><code>df[<span class="st">'x'</span>].<span class="fn">fillna</span>(df[<span class="st">'x'</span>].<span class="fn">min</span>())       <span class="out"># 최솟값</span>
+df[<span class="st">'x'</span>].<span class="fn">fillna</span>(df[<span class="st">'x'</span>].<span class="fn">mean</span>())      <span class="out"># 평균</span>
+df[<span class="st">'x'</span>].<span class="fn">fillna</span>(df[<span class="st">'x'</span>].<span class="fn">mode</span>()[<span class="nm">0</span>])   <span class="out"># 최빈값(문자형)</span>
+df.<span class="fn">isnull</span>().<span class="fn">sum</span>().<span class="fn">idxmax</span>()        <span class="out"># 결측 최다 컬럼 찾기</span></code></pre>
+
+      <h3 class="sec">④ 출력 형식 & 자주 빠뜨리는 것</h3>
+      <ul>
+        <li><code>int( )</code>로 감싸 정수 출력 / <code>round(x, 2)</code> 소수 2자리</li>
+        <li>집계 시 문자컬럼 에러 → <code>numeric_only=True</code></li>
+        <li>정렬·필터 후 <code>iloc[0]</code>로 1위 값 추출</li>
+        <li>특정 컬럼만 결측 제거: <code>dropna(subset=['f1'])</code></li>
+        <li>개수 세기: <code>len(df[cond])</code> = <code>sum(cond)</code></li>
+      </ul>
+
+      <h3 class="sec">⑤ datetime 포맷 코드</h3>
+      <table>
+        <tr><th>코드</th><th>의미</th><th>코드</th><th>의미</th></tr>
+        <tr><td><code>%Y</code></td><td>연도 4자리</td><td><code>%H</code></td><td>시</td></tr>
+        <tr><td><code>%y</code></td><td>연도 2자리</td><td><code>%M</code></td><td>분</td></tr>
+        <tr><td><code>%m</code></td><td>월</td><td><code>%S</code></td><td>초</td></tr>
+        <tr><td><code>%d</code></td><td>일</td><td colspan="2"><code>to_period</code>: Y Q M D H</td></tr>
+      </table>
+
+    </div>
+  </details>
+
+  <p class="hint">출처: part1/ch1_python.ipynb · ch2_pandas.ipynb · ch3_ex_type1.ipynb &nbsp;|&nbsp; 오프라인 동작 · 외부 의존 없음</p>
+</div>
+
+<button class="toTop" id="toTop" onclick="window.scrollTo({top:0,behavior:'smooth'})">↑</button>
+
+<script>
+function toggleTheme(){
+  var h=document.documentElement;
+  var cur=h.getAttribute('data-theme');
+  if(cur==='light'){h.removeAttribute('data-theme'); document.getElementById('themeBtn').textContent='🌙';}
+  else{h.setAttribute('data-theme','light'); document.getElementById('themeBtn').textContent='☀️';}
+}
+// 검색: 키워드 포함 안 된 섹션(h3.sec 블록) 숨김 + 대단원 열기
+function doSearch(q){
+  q=(q||'').trim().toLowerCase();
+  var units=document.querySelectorAll('details.unit');
+  if(!q){
+    // 초기화
+    document.querySelectorAll('.nohit').forEach(function(e){e.classList.remove('nohit');});
+    return;
+  }
+  units.forEach(function(u){
+    var anyHit=false;
+    // 섹션 단위(h3.sec ~ 다음 h3.sec 전까지)를 묶기 어려우니 카드/블록 단위로 처리
+    var blocks=u.querySelectorAll('.unit-body > *');
+    var group=[]; var groups=[];
+    blocks.forEach(function(b){
+      if(b.classList.contains('sec')){ if(group.length)groups.push(group); group=[b]; }
+      else group.push(b);
+    });
+    if(group.length)groups.push(group);
+    groups.forEach(function(g){
+      var txt=g.map(function(e){return e.textContent;}).join(' ').toLowerCase();
+      var hit=txt.indexOf(q)>=0;
+      if(hit)anyHit=true;
+      g.forEach(function(e){ e.classList.toggle('nohit', !hit); });
+    });
+    // q문제 details도 개별 처리
+    u.querySelectorAll('details.q').forEach(function(d){
+      var hit=d.textContent.toLowerCase().indexOf(q)>=0;
+      d.classList.toggle('nohit', !hit);
+      if(hit)anyHit=true;
+    });
+    u.open=anyHit;
+    u.classList.toggle('nohit', !anyHit);
+  });
+}
+// 맨 위로 버튼
+window.addEventListener('scroll',function(){
+  document.getElementById('toTop').style.display = window.scrollY>400?'block':'none';
+});
+// TOC 클릭 시 해당 대단원 펼치기
+document.querySelectorAll('.toc a').forEach(function(a){
+  a.addEventListener('click',function(){
+    var t=document.querySelector(this.getAttribute('href'));
+    if(t&&t.tagName==='DETAILS')t.open=true;
+  });
+});
+</script>
+</body>
+</html>
